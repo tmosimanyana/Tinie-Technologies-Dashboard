@@ -19,8 +19,8 @@ export const formatDateToLocal = (
     month: 'short',
     year: 'numeric',
   };
-  const formatter = new Intl.DateTimeFormat(locale, options);
-  return formatter.format(date);
+
+  return new Intl.DateTimeFormat(locale, options).format(date);
 };
 
 export const generateYAxis = (revenue: Revenue[]) => {
@@ -35,7 +35,10 @@ export const generateYAxis = (revenue: Revenue[]) => {
   return { yAxisLabels, topLabel };
 };
 
-export const generatePagination = (currentPage: number, totalPages: number) => {
+export const generatePagination = (
+  currentPage: number,
+  totalPages: number,
+) => {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
