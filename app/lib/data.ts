@@ -36,12 +36,10 @@ export async function fetchLatestInvoices() {
       LIMIT 5
     `;
 
-    const latestInvoices = data.map((invoice) => ({
+    return data.map((invoice) => ({
       ...invoice,
       amount: formatCurrency(Number(invoice.amount)),
     }));
-
-    return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch the latest invoices.');
@@ -134,8 +132,7 @@ export async function fetchInvoicesPages(query: string) {
         invoices.status ILIKE ${`%${query}%`}
     `;
 
-    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
-    return totalPages;
+    return Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of invoices.');
@@ -198,14 +195,12 @@ export async function fetchFilteredCustomers(query: string) {
       ORDER BY customers.name ASC
     `;
 
-    const customers = data.map((customer) => ({
+    return data.map((customer) => ({
       ...customer,
       total_invoices: Number(customer.total_invoices),
       total_pending: formatCurrency(Number(customer.total_pending ?? 0)),
       total_paid: formatCurrency(Number(customer.total_paid ?? 0)),
     }));
-
-    return customers;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
